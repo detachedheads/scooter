@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+# encoding: utf-8
+
+# Exit from interupt
+Signal.trap('INT') { exit 1 }
+
+begin
+  # Load the library path
+  lib_path = File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib'))
+  $LOAD_PATH.unshift(lib_path)
+
+  # Bring in the app
+  require 'scooter'
+
+  # Let the GLI do its thing
+  Kernel.exit!(Scooter::GLI.new.execute!)
+rescue => e
+  $stderr.puts e.inspect
+  $stderr.puts e.message
+  $stderr.puts e.backtrace.join("\n")
+  exit e.respond_to?(:status_code) ? e.status_code : 999
+end
