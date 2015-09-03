@@ -24,11 +24,11 @@ module Scooter
             next
           end
 
-          local_ids << config['id']
+          # Prefix with a leading slash if missing
+          local_ids << (config['id'].start_with?('/') ? config['id'] : "/#{config['id']}")
         end
 
-        # Iterate a 
-        apps = ::Marathon::App.list
+        # Iterate the apps
         ::Marathon::App.list.each do |app|
 
           next if local_ids.include? app.id
