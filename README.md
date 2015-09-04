@@ -65,13 +65,21 @@ This command will clean up the JSON for a given file or directory of files, remo
 Scooter provides the ability to set global options via environment variables for the following:
 
 SCOOTER_COLOR
+
 SCOOTER_MARATHON_HOST
+
 SCOOTER_MARATHON_USER
+
 SCOOTER_MARATHON_PASS
+
 SCOOTER_MARATHON_PROXY_HOST
+
 SCOOTER_MARATHON_PROXY_PORT
+
 SCOOTER_MARATHON_PROXY_USER
+
 SCOOTER_MARATHON_PROXY_PASS
+
 SCOOTER_VERBOSE
 
 ## Examples
@@ -88,7 +96,13 @@ scooter info
 
 By default Scooter looks for Marathon on localhost and provides an option to specify what Marathon host to target:
 
-````
+````bash
 scooter --marathon=https://somecluster.marathon.service.consul info
 ````
 
+Or using environment variables:
+
+````bash
+export SCOOTER_MARATHON_HOST=https://marathon.service.consul
+scooter info
+````
