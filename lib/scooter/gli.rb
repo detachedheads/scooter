@@ -10,7 +10,7 @@ module Scooter
     APP_ID_REGEX = /^[a-zA-z0-9\.\-\/]+$/
 
     def initialize
-      program_desc 'Opinionated synchronization of Marathon jobs from JSON files.'
+      program_desc 'Opinionated synchronization of Marathon apps from JSON files.'
       version Scooter::Version::STRING.dup
 
       # Global Accepts
@@ -91,10 +91,18 @@ module Scooter
       # Error handling
 
       on_error do |e|
-        #$stderr.puts e.inspect
-        $stderr.puts e.message
-        $stderr.puts e.backtrace
-        true
+        case e
+        when ::Marathon::Error::AuthenticationError
+          $stderr.puts "Login failed.  Please check credentials."
+        when ::Marathon::Error::ClientError
+          $stdout.puts "Missing required argument: #{e.message}"
+        when ::Marathon::Error::IOError
+          $stderr.puts "Unable to connect to host!"
+        when ::Timeout::Error
+          $stderr.puts "Timeout while connecting to host!"
+        else      
+          $stderr.puts "Unhandled exception(#{e.class}) -- #{e.message}"
+        end
       end
       
       # Commands
@@ -116,13 +124,13 @@ module Scooter
         end
       end
 
-      desc 'Remove job configurations from Marathon that do not exist in the given directory.'
+      desc 'Remove app configurations from Marathon that do not exist in the given directory.'
       command :clean do |c|
         
-        c.desc 'A job configuration directory'
+        c.desc 'An app configuration directory'
         c.flag [:dir, :directory]
 
-        c.desc 'Perform the actual deletion of the jobs in Marathon'
+        c.desc 'Perform the actual deletion of the app(s) in Marathon'
         c.switch [:delete], default_value: false
 
         c.action do |global_options, options, _args|
@@ -137,13 +145,13 @@ module Scooter
         end
       end
 
-      desc 'Delete the job configuration from Marathon for the given app.'
+      desc 'Delete the configuration from Marathon for the given app.'
       command :delete do |c|
 
         c.desc 'Application ID'
         c.flag [:id], required: true, must_match: APP_ID_REGEX
 
-        c.desc 'Perform the actual deletion of the jobs in Marathon'
+        c.desc 'Perform the actual deletion of the app in Marathon'
         c.switch [:delete], default_value: false
 
         c.action do |global_options, options, _args|
@@ -151,10 +159,10 @@ module Scooter
         end
       end
       
-      desc 'Export the jobs configurations whose name matches the given regex.'
+      desc 'Export the app configurations whose name match the given regex.'
       command :export do |c|
 
-        c.desc 'A job configuration directory'
+        c.desc 'An app configuration directory'
         c.flag [:dir, :directory]
 
         c.desc 'Marathon Application Regex. (Note: nil implies `.*`)'
@@ -193,13 +201,13 @@ module Scooter
         end
       end
 
-      desc 'Synchronize the given job configuration(s) with Marathon.'
+      desc 'Synchronize the given app configuration(s) with Marathon.'
       command :sync do |c|
 
-        c.desc 'A job configuration directory'
+        c.desc 'An app configuration directory'
         c.flag [:dir, :directory]
 
-        c.desc 'A job configuration file'
+        c.desc 'An app configuration file'
         c.flag [:file]
 
         c.action do |global_options, options, _args|
@@ -226,13 +234,13 @@ module Scooter
         end
       end
 
-      desc 'Tidy the JSON format for the given job configuration(s).'
+      desc 'Tidy the JSON format for the given app configuration(s).'
       command :tidy do |c|
 
-        c.desc 'A job configuration directory'
+        c.desc 'An app configuration directory'
         c.flag [:dir, :directory]
 
-        c.desc 'A job configuration file'
+        c.desc 'An app configuration file'
         c.flag [:file]
 
         c.action do |global_options, options, _args|

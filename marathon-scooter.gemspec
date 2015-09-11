@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version                = Scooter::Version::STRING.dup
   spec.authors                = ['Yieldbot']
   spec.email                  = ['devops@yieldbot.com']
-  spec.summary                = 'Opinionated synchronization of Marathon jobs from JSON files.'
-  spec.description            = 'Opinionated synchronization of Marathon jobs from JSON files.'
+  spec.summary                = 'Opinionated synchronization of Marathon apps from JSON files.'
+  spec.description            = 'Opinionated synchronization of Marathon apps from JSON files.'
   spec.homepage               = 'https://github.com/yieldbot/scooter'
   spec.license                = 'MIT'
   spec.platform               = Gem::Platform::RUBY
