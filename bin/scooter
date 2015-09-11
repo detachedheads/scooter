@@ -15,6 +15,7 @@ begin
   # Let the GLI do its thing
   Kernel.exit!(Scooter::GLI.new.execute!)
 rescue => e
+  $stderr.puts e.class
   $stderr.puts e.inspect
   $stderr.puts e.message
   $stderr.puts e.backtrace.join("\n")
