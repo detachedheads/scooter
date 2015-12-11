@@ -20,7 +20,7 @@ module Scooter
           begin
             config = JSON.parse(IO.read(f))
           rescue Exception => e
-            Scooter.ui.warning("Error parsing #{f}.   #{e}")
+            Scooter.ui.warn("Error parsing #{f}.   #{e}")
             next
           end
 
