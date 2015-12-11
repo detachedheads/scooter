@@ -1,3 +1,7 @@
+## 0.1.3 - 2015-12-11
+
+* Fixed a bug where certain exception cases were calling a function that did not exist.
+
 ## 0.1.2 - 2015-09-11
 
 * Added exception handling around `info` command.
